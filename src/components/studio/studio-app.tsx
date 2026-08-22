@@ -14,6 +14,7 @@ import {
   type Currency,
   type Proposal,
 } from "@/lib/proposal";
+import { sharePath } from "@/lib/share";
 import {
   canCreateDraft,
   deleteDraft,
@@ -38,6 +39,7 @@ export function StudioApp() {
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [showDrafts, setShowDrafts] = useState(false);
   const [limitHit, setLimitHit] = useState(false);
+  const [copied, setCopied] = useState(false);
   const skipSave = useRef(true);
 
   const refreshDrafts = useCallback(() => {
@@ -137,6 +139,14 @@ export function StudioApp() {
     [createNew, proposal?.id, refreshDrafts, router],
   );
 
+  const copyShareLink = useCallback(async () => {
+    if (!proposal) return;
+    const url = `${window.location.origin}${sharePath(proposal)}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  }, [proposal]);
+
   const status = useMemo(() => {
     if (!savedAt) return "Черновик";
     return `Сохранено ${formatUpdatedAt(savedAt)}`;
@@ -179,6 +189,9 @@ export function StudioApp() {
             <Link href={`/p/${proposal.id}`} className="btn-ghost">
               Превью
             </Link>
+            <button type="button" className="btn-ghost" onClick={copyShareLink}>
+              {copied ? "Ссылка скопирована" : "Ссылка клиенту"}
+            </button>
             <button type="button" className="btn-lime" onClick={printProposal}>
               Print / PDF
             </button>

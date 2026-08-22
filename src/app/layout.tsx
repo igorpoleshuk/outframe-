@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Outfit, Syne } from "next/font/google";
+import { JsonLd } from "@/components/seo/json-ld";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const syne = Syne({
@@ -20,20 +22,48 @@ const manrope = Manrope({
   display: "swap",
 });
 
+const title = "Outframe — коммерческие предложения для фрилансеров";
+const description =
+  "Собери КП за один вечер: scope, цена, срок и условия в живом превью. Ссылка для клиента, печать и PDF. Без аккаунта.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://outframe-phi.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Outframe — коммерческие предложения для фрилансеров",
+    default: title,
     template: "%s · Outframe",
   },
-  description:
-    "Собери КП в живом превью: scope, цена, срок и условия. Черновики в браузере, ссылка на превью, печать и PDF.",
+  description,
+  keywords: [
+    "коммерческое предложение",
+    "КП для фрилансера",
+    "генератор КП",
+    "Outframe",
+    "смета фриланс",
+  ],
+  authors: [{ name: "Outframe" }],
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: SITE_URL,
+    siteName: "Outframe",
+    title,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${syne.variable} ${outfit.variable} ${manrope.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <JsonLd />
+        {children}
+      </body>
     </html>
   );
 }
