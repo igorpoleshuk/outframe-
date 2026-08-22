@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { ProposalSheet } from "@/components/proposal/sheet";
 import { sampleProposal } from "@/lib/proposal";
+import { OFFERS } from "@/lib/plan";
 import { DEMO_ID, SITE_URL } from "@/lib/site";
 
 const steps = [
@@ -82,7 +83,8 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-5 text-sm text-pine-300">
-              {SITE_URL.replace("https://", "")} · без почты · 2 черновика на free
+              {SITE_URL.replace("https://", "")} · без почты · 2 черновика на free · Pro{" "}
+              {OFFERS.lifetime.priceLabel} разово
             </p>
           </div>
 

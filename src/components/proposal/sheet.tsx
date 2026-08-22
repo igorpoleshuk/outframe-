@@ -4,6 +4,7 @@ import { formatPrice, type Proposal } from "@/lib/proposal";
 type ProposalSheetProps = {
   proposal: Proposal;
   compact?: boolean;
+  showWatermark?: boolean;
 };
 
 function display(value: string, fallback: string) {
@@ -11,7 +12,11 @@ function display(value: string, fallback: string) {
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
-export function ProposalSheet({ proposal, compact = false }: ProposalSheetProps) {
+export function ProposalSheet({
+  proposal,
+  compact = false,
+  showWatermark = true,
+}: ProposalSheetProps) {
   const scope = proposal.scope.filter((item) => item.title.trim() || item.detail.trim());
 
   return (
@@ -138,9 +143,11 @@ export function ProposalSheet({ proposal, compact = false }: ProposalSheetProps)
           Действует {display(proposal.validUntil, "2 недели")}
         </p>
       </footer>
-      <p className="proposal-watermark mt-8 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-pine-400">
-        {FREE_WATERMARK}
-      </p>
+      {showWatermark ? (
+        <p className="proposal-watermark mt-8 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-pine-400">
+          {FREE_WATERMARK}
+        </p>
+      ) : null}
     </article>
   );
 }

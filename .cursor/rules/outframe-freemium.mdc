@@ -1,20 +1,20 @@
 ---
-description: Free-plan limits for studio drafts and PDF
-globs: src/lib/**/*.ts,src/components/studio/**/*.tsx,src/components/proposal/**/*.tsx,src/app/pro/**/*.tsx
+description: Free and Pro limits for drafts, PDF watermark, and licenses
+globs: src/lib/**/*.ts,src/components/studio/**/*.tsx,src/components/proposal/**/*.tsx,src/components/pro/**/*.tsx,src/app/pro/**/*.tsx,src/app/checkout/**/*.tsx,src/app/api/license/**/*.ts
 alwaysApply: false
 ---
 
 # Freemium
 
-- Free plan: **2 drafts** max. Enforce in `saveDraft` and the studio “Новый” action.
-- New drafts above the limit must not be written to `localStorage`. Show a Pro CTA instead.
-- Every proposal sheet/PDF shows watermark `Собрано в Outframe · free` from `FREE_WATERMARK`.
-- `/pro` price is **990 ₽/мес**. Waitlist is `mailto` via `WAITLIST_MAILTO` in `src/lib/plan.ts`.
-- Keep plan numbers in `src/lib/plan.ts`. Do not hardcode a different limit or price.
+- Free: **2 drafts**, full editor, share links, Print/PDF **with watermark**.
+- Do not block Print on free. Show a gate: “В PDF будет метка free” → Печатать с меткой | Снять метку (Pro).
+- Default paid offer is **Pro Lifetime — 2 490 ₽ разово**. Monthly **990 ₽/мес** is secondary.
+- Pro unlocks: unlimited drafts + no watermark. Entitlement is stored in `localStorage` only after **server-verified** redeem (`POST /api/license/redeem`).
+- Keep prices, offer ids, and mailto invoice helpers in `src/lib/plan.ts`. Do not hardcode a different limit or price.
 
 ```ts
 // ❌ BAD
-saveDraft(createProposal()); // even when 2 drafts already exist
+saveDraft(createProposal()); // even when 2 drafts already exist on free
 
 // ✅ GOOD
 if (!canCreateDraft()) return;

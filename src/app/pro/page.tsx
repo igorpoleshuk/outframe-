@@ -1,26 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
-import { FREE_DRAFT_LIMIT, PRO_PRICE_LABEL, WAITLIST_EMAIL, WAITLIST_MAILTO } from "@/lib/plan";
+import { RedeemForm } from "@/components/pro/redeem-form";
+import { FREE_DRAFT_LIMIT, OFFERS, PRO_UNLOCKS } from "@/lib/plan";
 
 export const metadata: Metadata = {
   title: "Pro",
-  description: "Outframe Pro — больше черновиков и PDF без водяного знака.",
+  description: "Outframe Pro — разовый Lifetime 2 490 ₽ или 990 ₽/мес. Безлимит черновиков и PDF без метки.",
 };
 
 const freePoints = [
   `${FREE_DRAFT_LIMIT} черновика в браузере`,
-  "Live preview и Print / PDF",
-  "Водяной знак «Собрано в Outframe · free»",
-];
-
-const proPoints = [
-  "Больше черновиков без потолка free",
-  "PDF без водяного знака",
-  "Приоритет в списке следующих фич",
+  "Полный редактор и ссылка клиенту",
+  "Print / PDF с меткой «Собрано в Outframe · free»",
 ];
 
 export default function ProPage() {
+  const lifetime = OFFERS.lifetime;
+  const monthly = OFFERS.monthly;
+
   return (
     <div className="min-h-screen bg-pine-900">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-5 sm:px-8">
@@ -31,9 +29,9 @@ export default function ProPage() {
           <Link href="/studio" className="btn-ghost">
             Студия
           </Link>
-          <a href={WAITLIST_MAILTO} className="btn-lime">
-            В waitlist
-          </a>
+          <Link href={`/checkout?offer=${lifetime.id}`} className="btn-lime">
+            Купить Lifetime
+          </Link>
         </nav>
       </header>
 
@@ -42,14 +40,14 @@ export default function ProPage() {
           Outframe Pro
         </p>
         <h1 className="mt-4 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-          Рамка без лимита и без водяного знака
+          Один платёж. Чистый PDF клиенту.
         </h1>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-pine-200">
-          Free оставляет два черновика и метку на PDF. Pro снимает это, когда будете готовы
-          отправлять КП клиентам без рамки «free».
+          Free уже собирает КП и даёт ссылку. Pro снимает лимит черновиков и метку на листе — когда
+          отправляете клиенту без рамки «free».
         </p>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
+        <div className="mt-12 grid gap-4 lg:grid-cols-3">
           <article className="border border-pine-700 bg-pine-850 px-6 py-7">
             <p className="text-[11px] uppercase tracking-[0.16em] text-pine-300">Сейчас</p>
             <h2 className="mt-2 font-display text-2xl font-semibold">Free</h2>
@@ -64,22 +62,45 @@ export default function ProPage() {
             </Link>
           </article>
 
-          <article className="border border-lime/40 bg-pine-850 px-6 py-7">
-            <p className="text-[11px] uppercase tracking-[0.16em] text-lime">Следующий шаг</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold">Pro</h2>
-            <p className="mt-1 font-display text-3xl font-semibold text-lime">{PRO_PRICE_LABEL}</p>
+          <article className="border border-lime/50 bg-pine-850 px-6 py-7">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-lime">Рекомендуем</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold">{lifetime.name}</h2>
+            <p className="mt-1 font-display text-3xl font-semibold text-lime">
+              {lifetime.priceLabel}
+            </p>
+            <p className="mt-1 text-sm text-pine-300">{lifetime.cadenceLabel}</p>
             <ul className="mt-5 space-y-2 text-sm text-pine-200">
-              {proPoints.map((item) => (
+              {PRO_UNLOCKS.map((item) => (
                 <li key={item}>{item}</li>
               ))}
+              <li>Без ежемесячной подписки</li>
             </ul>
-            <a href={WAITLIST_MAILTO} className="btn-lime mt-8">
-              Написать в waitlist
-            </a>
-            <p className="mt-3 text-xs text-pine-300">
-              Письмо откроется на {WAITLIST_EMAIL}. Оплата ещё не подключена.
-            </p>
+            <Link href={`/checkout?offer=${lifetime.id}`} className="btn-lime mt-8">
+              Оплатить разово
+            </Link>
           </article>
+
+          <article className="border border-pine-700 bg-pine-850 px-6 py-7">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-pine-300">Иначе</p>
+            <h2 className="mt-2 font-display text-2xl font-semibold">{monthly.name}</h2>
+            <p className="mt-1 font-display text-3xl font-semibold text-paper">
+              {monthly.priceLabel}
+            </p>
+            <p className="mt-1 text-sm text-pine-300">{monthly.cadenceLabel}</p>
+            <ul className="mt-5 space-y-2 text-sm text-pine-200">
+              {PRO_UNLOCKS.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+              <li>Если удобнее помесячно</li>
+            </ul>
+            <Link href={`/checkout?offer=${monthly.id}`} className="btn-ghost mt-8">
+              Оплатить месяц
+            </Link>
+          </article>
+        </div>
+
+        <div className="mt-10">
+          <RedeemForm />
         </div>
       </main>
     </div>

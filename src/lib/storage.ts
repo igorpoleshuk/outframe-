@@ -1,3 +1,4 @@
+import { hasProEntitlement } from "./license";
 import { FREE_DRAFT_LIMIT } from "./plan";
 import { type Proposal } from "./proposal";
 
@@ -34,7 +35,7 @@ export function getDraft(id: string): Proposal | null {
 }
 
 export function canCreateDraft(): boolean {
-  return readAll().length < FREE_DRAFT_LIMIT;
+  return hasProEntitlement() || readAll().length < FREE_DRAFT_LIMIT;
 }
 
 export function saveDraft(proposal: Proposal): Proposal | null {
@@ -43,7 +44,7 @@ export function saveDraft(proposal: Proposal): Proposal | null {
   const index = drafts.findIndex((item) => item.id === next.id);
   if (index >= 0) {
     drafts[index] = next;
-  } else if (drafts.length < FREE_DRAFT_LIMIT) {
+  } else if (hasProEntitlement() || drafts.length < FREE_DRAFT_LIMIT) {
     drafts.unshift(next);
   } else {
     return null;

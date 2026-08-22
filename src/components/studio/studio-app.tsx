@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Logo } from "@/components/brand/logo";
+import { PrintGate } from "@/components/pro/print-gate";
 import { ProposalSheet } from "@/components/proposal/sheet";
+import { useEntitlement } from "@/lib/license";
 import { FREE_DRAFT_LIMIT } from "@/lib/plan";
 import {
   createProposal,
@@ -25,22 +27,33 @@ import {
   setLastOpen,
 } from "@/lib/storage";
 
-function printProposal() {
-  window.print();
-}
-
 export function StudioApp() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requestedId = searchParams.get("id");
   const wantSample = searchParams.get("sample") === "1";
+  const { isPro } = useEntitlement();
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [drafts, setDrafts] = useState<Proposal[]>([]);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [showDrafts, setShowDrafts] = useState(false);
   const [limitHit, setLimitHit] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [printGate, setPrintGate] = useState(false);
   const skipSave = useRef(true);
+
+  const runPrint = useCallback(() => {
+    setPrintGate(false);
+    window.setTimeout(() => window.print(), 40);
+  }, []);
+
+  const requestPrint = useCallback(() => {
+    if (isPro) {
+      window.print();
+      return;
+    }
+    setPrintGate(true);
+  }, [isPro]);
 
   const refreshDrafts = useCallback(() => {
     setDrafts(listDrafts());
@@ -175,10 +188,12 @@ export function StudioApp() {
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
             <span className="hidden text-[11px] uppercase tracking-[0.14em] text-pine-300 sm:inline">
-              Free {Math.min(drafts.length, FREE_DRAFT_LIMIT)}/{FREE_DRAFT_LIMIT}
+              {isPro
+                ? "Pro"
+                : `Free ${Math.min(drafts.length, FREE_DRAFT_LIMIT)}/${FREE_DRAFT_LIMIT}`}
             </span>
             <Link href="/pro" className="btn-ghost">
-              Pro
+              {isPro ? "Тариф" : "Pro"}
             </Link>
             <button type="button" className="btn-ghost" onClick={() => setShowDrafts((v) => !v)}>
               Черновики
@@ -192,17 +207,19 @@ export function StudioApp() {
             <button type="button" className="btn-ghost" onClick={copyShareLink}>
               {copied ? "Ссылка скопирована" : "Ссылка клиенту"}
             </button>
-            <button type="button" className="btn-lime" onClick={printProposal}>
+            <button type="button" className="btn-lime" onClick={requestPrint}>
               Print / PDF
             </button>
           </div>
         </div>
       </header>
 
-      {limitHit ? (
+      {printGate ? <PrintGate onPrint={runPrint} onClose={() => setPrintGate(false)} /> : null}
+
+      {limitHit && !isPro ? (
         <div className="no-print border-b border-lime/30 bg-pine-850 px-4 py-3 text-sm sm:px-6">
           На free-тарифе доступны только {FREE_DRAFT_LIMIT} черновика.{" "}
-          <Link href="/pro" className="text-lime underline-offset-2 hover:underline">
+          <Link href="/checkout?offer=lifetime" className="text-lime underline-offset-2 hover:underline">
             Снять лимит в Pro
           </Link>
         </div>
@@ -212,7 +229,9 @@ export function StudioApp() {
         <div className="no-print border-b border-pine-800 bg-pine-850 px-4 py-4 sm:px-6">
           <div className="mb-3 flex items-center justify-between">
             <p className="font-display text-sm font-semibold">
-              Черновики · {drafts.length}/{FREE_DRAFT_LIMIT} free
+              {isPro
+                ? `Черновики · ${drafts.length}`
+                : `Черновики · ${drafts.length}/${FREE_DRAFT_LIMIT} free`}
             </p>
             <button type="button" className="text-sm text-pine-300 hover:text-lime" onClick={() => setShowDrafts(false)}>
               Закрыть
@@ -452,7 +471,7 @@ export function StudioApp() {
             <span>A4 · клиентский лист</span>
           </div>
           <div className="mx-auto max-w-[720px]">
-            <ProposalSheet proposal={proposal} />
+            <ProposalSheet proposal={proposal} showWatermark={!isPro} />
           </div>
         </div>
       </div>
