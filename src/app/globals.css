@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: #0a1a16;
+  color: #e8f0ea;
+}
+
+::selection {
+  background: #c8f542;
+  color: #1a2a05;
+}
+
+.field-label {
+  @apply mb-1.5 block text-[11px] font-medium uppercase tracking-[0.16em] text-pine-300;
+}
+
+.field-input,
+.field-textarea {
+  @apply w-full rounded-sm border border-pine-600/70 bg-pine-900 px-3 py-2.5 text-sm text-paper outline-none transition placeholder:text-pine-400 focus:border-lime/70 focus:ring-1 focus:ring-lime/40;
+}
+
+.field-textarea {
+  @apply min-h-[92px] resize-y leading-relaxed;
+}
+
+.btn-lime {
+  @apply inline-flex items-center justify-center gap-2 rounded-sm bg-lime px-4 py-2.5 font-display text-sm font-semibold text-lime-ink transition hover:bg-[#d6ff5c];
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-sm border border-pine-500/70 px-4 py-2.5 text-sm text-paper transition hover:border-lime/60 hover:text-lime;
+}
+
+.proposal-sheet {
+  width: 100%;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: #0c1916 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-root {
+    background: white !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .proposal-sheet {
+    box-shadow: none !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
