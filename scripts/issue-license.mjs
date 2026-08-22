@@ -20,8 +20,8 @@ function loadEnvFile(name) {
 loadEnvFile(".env.local");
 loadEnvFile(".env");
 
-const offer = process.argv[2] === "monthly" ? "monthly" : "lifetime";
-const prefix = offer === "monthly" ? "OF-M" : "OF-L";
+const offer = "monthly";
+const prefix = "OF-M";
 const secret = process.env.LICENSE_SECRET?.trim();
 
 if (!secret) {

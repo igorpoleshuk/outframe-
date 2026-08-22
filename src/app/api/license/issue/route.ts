@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminTokenMatches, issueLicense } from "@/lib/license-server";
-import { isOfferId } from "@/lib/plan";
+import { adminTokenMatches, issueLicense, parseIssueOffer } from "@/lib/license-server";
 
 export const runtime = "nodejs";
 
@@ -10,8 +9,8 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json().catch(() => null)) as { offer?: unknown } | null;
-  const offer = typeof body?.offer === "string" ? body.offer : "";
-  if (!isOfferId(offer)) {
+  const offer = parseIssueOffer(body?.offer ?? "monthly");
+  if (!offer) {
     return NextResponse.json({ ok: false, error: "offer" }, { status: 400 });
   }
 

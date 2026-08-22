@@ -1,9 +1,10 @@
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
-import { OFFERS, type OfferId } from "./plan";
+import { OFFERS, asLicenseOfferId, type LicenseOfferId } from "./plan";
 
 const BODY_HEX_LENGTH = 22;
 const ID_HEX_LENGTH = 12;
 const SIG_HEX_LENGTH = 10;
+const LEGACY_LIFETIME_PREFIX = "OF-L";
 
 function hmacHex(secret: string, payload: string): string {
   return createHmac("sha256", secret).update(payload).digest("hex");
@@ -27,11 +28,18 @@ function allowlistKeys(): string[] {
     .filter(Boolean);
 }
 
-function offerFromPrefix(normalized: string): OfferId {
-  return normalized.startsWith(`${OFFERS.monthly.keyPrefix}-`) ||
-    normalized.startsWith(OFFERS.monthly.keyPrefix)
-    ? "monthly"
-    : "lifetime";
+function prefixFor(normalized: string): string | null {
+  const monthly = OFFERS.monthly.keyPrefix;
+  if (monthly && (normalized.startsWith(`${monthly}-`) || normalized.startsWith(monthly))) {
+    return monthly;
+  }
+  if (
+    normalized.startsWith(`${LEGACY_LIFETIME_PREFIX}-`) ||
+    normalized.startsWith(LEGACY_LIFETIME_PREFIX)
+  ) {
+    return LEGACY_LIFETIME_PREFIX;
+  }
+  return null;
 }
 
 function safeEqual(left: string, right: string): boolean {
@@ -41,33 +49,33 @@ function safeEqual(left: string, right: string): boolean {
   return timingSafeEqual(a, b);
 }
 
-export function formatLicenseKey(offer: OfferId, idHex: string, sigHex: string): string {
-  return `${OFFERS[offer].keyPrefix}-${groupHex(idHex + sigHex)}`;
+export function formatLicenseKey(idHex: string, sigHex: string): string {
+  return `${OFFERS.monthly.keyPrefix}-${groupHex(idHex + sigHex)}`;
 }
 
-export function issueLicense(offer: OfferId): string {
+export function issueLicense(offer: LicenseOfferId = "monthly"): string {
   const secret = process.env.LICENSE_SECRET?.trim();
   if (!secret) {
     throw new Error("LICENSE_SECRET is not set");
   }
+  const prefix = OFFERS[offer].keyPrefix;
   const id = randomBytes(ID_HEX_LENGTH / 2).toString("hex");
-  const sig = hmacHex(secret, `${OFFERS[offer].keyPrefix}:${id}`).slice(0, SIG_HEX_LENGTH);
-  return formatLicenseKey(offer, id, sig);
+  const sig = hmacHex(secret, `${prefix}:${id}`).slice(0, SIG_HEX_LENGTH);
+  return formatLicenseKey(id, sig);
 }
 
 export function verifyLicense(
   key: string,
-): { ok: true; offer: OfferId } | { ok: false; error: "missing" | "invalid" } {
+): { ok: true; offer: LicenseOfferId } | { ok: false; error: "missing" | "invalid" } {
   const normalized = normalizeKey(key);
   if (!normalized) return { ok: false, error: "missing" };
 
   if (allowlistKeys().includes(normalized)) {
-    return { ok: true, offer: offerFromPrefix(normalized) };
+    return { ok: true, offer: "monthly" };
   }
 
-  const offer = offerFromPrefix(normalized);
-  const prefix = OFFERS[offer].keyPrefix;
-  if (!normalized.startsWith(`${prefix}-`)) {
+  const prefix = prefixFor(normalized);
+  if (!prefix || !normalized.startsWith(`${prefix}-`)) {
     return { ok: false, error: "invalid" };
   }
 
@@ -86,7 +94,11 @@ export function verifyLicense(
     return { ok: false, error: "invalid" };
   }
 
-  return { ok: true, offer };
+  return { ok: true, offer: "monthly" };
+}
+
+export function parseIssueOffer(value: unknown): LicenseOfferId | null {
+  return typeof value === "string" ? asLicenseOfferId(value) : null;
 }
 
 export function adminTokenMatches(header: string | null): boolean {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useEntitlement } from "@/lib/license";
-import { OFFERS } from "@/lib/plan";
+import { OFFERS, PRO_SUPPORT_PRICE_FULL } from "@/lib/plan";
 
 export function RedeemForm() {
   const { isPro, offer, ready, redeem } = useEntitlement();
@@ -28,7 +28,7 @@ export function RedeemForm() {
     );
   }
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setError("");
@@ -51,7 +51,8 @@ export function RedeemForm() {
       </p>
       <h2 className="mt-2 font-display text-2xl font-semibold">Активировать Pro</h2>
       <p className="mt-2 text-sm text-pine-200">
-        После оплаты приходит ключ OF-L-… или OF-M-…. Проверка на сервере, затем Pro в этом браузере.
+        После перевода за {PRO_SUPPORT_PRICE_FULL} приходит ключ OF-M-…. Проверка на сервере, затем
+        Pro в этом браузере.
       </p>
       <label className="mt-5 block">
         <span className="field-label">Лицензионный ключ</span>
@@ -59,7 +60,7 @@ export function RedeemForm() {
           className="field-input font-mono uppercase"
           value={key}
           onChange={(event) => setKey(event.target.value)}
-          placeholder="OF-L-…"
+          placeholder="OF-M-…"
           autoComplete="off"
           spellCheck={false}
         />

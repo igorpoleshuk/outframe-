@@ -7,7 +7,7 @@ import { Logo } from "@/components/brand/logo";
 import { PrintGate } from "@/components/pro/print-gate";
 import { ProposalSheet } from "@/components/proposal/sheet";
 import { useEntitlement } from "@/lib/license";
-import { FREE_DRAFT_LIMIT } from "@/lib/plan";
+import { checkoutPath, FREE_DRAFT_LIMIT, PRO_SUPPORT_PRICE_FULL } from "@/lib/plan";
 import {
   createProposal,
   createScopeItem,
@@ -193,7 +193,7 @@ export function StudioApp() {
                 : `Free ${Math.min(drafts.length, FREE_DRAFT_LIMIT)}/${FREE_DRAFT_LIMIT}`}
             </span>
             <Link href="/pro" className="btn-ghost">
-              {isPro ? "Тариф" : "Pro"}
+              {isPro ? "Pro" : "Донат"}
             </Link>
             <button type="button" className="btn-ghost" onClick={() => setShowDrafts((v) => !v)}>
               Черновики
@@ -218,9 +218,13 @@ export function StudioApp() {
 
       {limitHit && !isPro ? (
         <div className="no-print border-b border-lime/30 bg-pine-850 px-4 py-3 text-sm sm:px-6">
-          На free-тарифе доступны только {FREE_DRAFT_LIMIT} черновика.{" "}
-          <Link href="/checkout?offer=lifetime" className="text-lime underline-offset-2 hover:underline">
-            Снять лимит в Pro
+          На free доступны только {FREE_DRAFT_LIMIT} черновика.{" "}
+          <Link href={checkoutPath("donate")} className="text-lime underline-offset-2 hover:underline">
+            Поддержать
+          </Link>
+          {" · "}
+          <Link href={checkoutPath("monthly")} className="text-lime underline-offset-2 hover:underline">
+            Pro за {PRO_SUPPORT_PRICE_FULL}
           </Link>
         </div>
       ) : null}

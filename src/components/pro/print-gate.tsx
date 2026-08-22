@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { checkoutPath, PRO_SUPPORT_PRICE_FULL } from "@/lib/plan";
 
 type PrintGateProps = {
   onPrint: () => void;
@@ -29,13 +30,19 @@ export function PrintGate({ onPrint, onClose }: PrintGateProps) {
           <button type="button" className="btn-ghost" onClick={onPrint}>
             Печатать с меткой
           </button>
-          <Link href="/checkout?offer=lifetime" className="btn-lime">
-            Снять метку (Pro)
+          <Link href={checkoutPath("donate")} className="btn-lime">
+            Донат / поддержать
           </Link>
         </div>
+        <Link
+          href={checkoutPath("monthly")}
+          className="mt-4 inline-block text-xs uppercase tracking-[0.14em] text-pine-300 hover:text-lime"
+        >
+          Pro за {PRO_SUPPORT_PRICE_FULL} — снять метку
+        </Link>
         <button
           type="button"
-          className="mt-4 text-xs uppercase tracking-[0.14em] text-pine-300 hover:text-lime"
+          className="mt-3 block text-xs uppercase tracking-[0.14em] text-pine-300 hover:text-lime"
           onClick={onClose}
         >
           Закрыть

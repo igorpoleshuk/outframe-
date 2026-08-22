@@ -1,16 +1,17 @@
 ---
-description: Free and Pro limits for drafts, PDF watermark, and licenses
+description: Free limits, donate-first support, and optional $1 Pro
 globs: src/lib/**/*.ts,src/components/studio/**/*.tsx,src/components/proposal/**/*.tsx,src/components/pro/**/*.tsx,src/app/pro/**/*.tsx,src/app/checkout/**/*.tsx,src/app/api/license/**/*.ts
 alwaysApply: false
 ---
 
 # Freemium
 
-- Free: **2 drafts**, full editor, share links, Print/PDF **with watermark**.
-- Do not block Print on free. Show a gate: “В PDF будет метка free” → Печатать с меткой | Снять метку (Pro).
-- Default paid offer is **Pro Lifetime — 2 490 ₽ разово**. Monthly **990 ₽/мес** is secondary.
+- Free is the real product: **2 drafts**, full editor, share/print, PDF **with watermark**.
+- Do not block Print on free. Gate copy: “В PDF будет метка free” → Печатать с меткой | Донат / поддержать. Optional: Pro $1 / мес (99 ₽) to drop the watermark.
+- **Primary CTA is donate / поддержать** — no obligation, “скинуть столько, сколько инструмент сэкономил”.
+- Optional symbolic Pro is **$1 / мес (99 ₽)**. Frame it as support, not SaaS. Do not lead with 990 ₽/мес or 2490 ₽ lifetime.
 - Pro unlocks: unlimited drafts + no watermark. Entitlement is stored in `localStorage` only after **server-verified** redeem (`POST /api/license/redeem`).
-- Keep prices, offer ids, and mailto invoice helpers in `src/lib/plan.ts`. Do not hardcode a different limit or price.
+- Keep prices, offer ids, donate/pro mailto helpers, and env URL hooks in `src/lib/plan.ts`. Do not hardcode a different limit or price.
 
 ```ts
 // ❌ BAD

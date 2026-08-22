@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
 import { ProposalSheet } from "@/components/proposal/sheet";
 import { sampleProposal } from "@/lib/proposal";
-import { OFFERS } from "@/lib/plan";
+import { FREE_DRAFT_LIMIT, PRO_SUPPORT_PRICE_LABEL } from "@/lib/plan";
 import { DEMO_ID, SITE_URL } from "@/lib/site";
 
 const steps = [
@@ -52,7 +52,7 @@ export default function HomePage() {
             Пример
           </Link>
           <Link href="/pro" className="btn-ghost">
-            Pro
+            Донат
           </Link>
           <Link href="/studio" className="btn-lime">
             Собрать КП
@@ -83,8 +83,8 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-5 text-sm text-pine-300">
-              {SITE_URL.replace("https://", "")} · без почты · 2 черновика на free · Pro{" "}
-              {OFFERS.lifetime.priceLabel} разово
+              {SITE_URL.replace("https://", "")} · без почты · {FREE_DRAFT_LIMIT} черновика на
+              free · донат или {PRO_SUPPORT_PRICE_LABEL}
             </p>
           </div>
 
@@ -202,7 +202,12 @@ export default function HomePage() {
       <footer className="border-t border-pine-800 px-5 py-6 text-sm text-pine-300 sm:px-8">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
           <Logo className="text-pine-200" markClassName="h-5 w-5" />
-          <p>{SITE_URL.replace("https://", "")} · пример · Print / PDF</p>
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span>{SITE_URL.replace("https://", "")} · пример · Print / PDF</span>
+            <Link href="/pro" className="text-lime hover:underline">
+              Донат
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

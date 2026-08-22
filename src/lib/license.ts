@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { isOfferId, type OfferId } from "./plan";
+import { asLicenseOfferId, type LicenseOfferId } from "./plan";
 
 export const ENTITLEMENT_KEY = "outframe.entitlement.v1";
 
 export type Entitlement = {
-  offer: OfferId;
+  offer: LicenseOfferId;
   key: string;
   redeemedAt: number;
 };
@@ -21,10 +21,11 @@ export function readEntitlement(): Entitlement | null {
     const raw = window.localStorage.getItem(ENTITLEMENT_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Entitlement;
-    if (!parsed || !isOfferId(parsed.offer) || typeof parsed.key !== "string") {
+    const offer = asLicenseOfferId(parsed.offer);
+    if (!parsed || !offer || typeof parsed.key !== "string") {
       return null;
     }
-    return parsed;
+    return { ...parsed, offer };
   } catch {
     return null;
   }
@@ -60,20 +61,21 @@ export function useEntitlement() {
       body: JSON.stringify({ key }),
     });
     const data = (await response.json().catch(() => null)) as
-      | { ok: true; offer: OfferId }
+      | { ok: true; offer: string }
       | { ok: false; error?: string }
       | null;
-    if (!data || !data.ok || !isOfferId(data.offer)) {
+    const offer = data && data.ok ? asLicenseOfferId(data.offer) : null;
+    if (!data || !data.ok || !offer) {
       return { ok: false as const, error: data && "error" in data ? data.error : "invalid" };
     }
     const next: Entitlement = {
-      offer: data.offer,
+      offer,
       key: key.trim(),
       redeemedAt: Date.now(),
     };
     writeEntitlement(next);
     setEntitlement(next);
-    return { ok: true as const, offer: data.offer };
+    return { ok: true as const, offer };
   }, []);
 
   return {
