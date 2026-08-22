@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Logo } from "@/components/brand/logo";
 import { ProposalSheet } from "@/components/proposal/sheet";
+import { FREE_DRAFT_LIMIT } from "@/lib/plan";
 import {
   createProposal,
   createScopeItem,
@@ -13,7 +14,15 @@ import {
   type Currency,
   type Proposal,
 } from "@/lib/proposal";
-import { deleteDraft, getDraft, getLastOpen, listDrafts, saveDraft } from "@/lib/storage";
+import {
+  canCreateDraft,
+  deleteDraft,
+  getDraft,
+  getLastOpen,
+  listDrafts,
+  saveDraft,
+  setLastOpen,
+} from "@/lib/storage";
 
 function printProposal() {
   window.print();
@@ -28,6 +37,7 @@ export function StudioApp() {
   const [drafts, setDrafts] = useState<Proposal[]>([]);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [showDrafts, setShowDrafts] = useState(false);
+  const [limitHit, setLimitHit] = useState(false);
   const skipSave = useRef(true);
 
   const refreshDrafts = useCallback(() => {
@@ -36,13 +46,24 @@ export function StudioApp() {
 
   useEffect(() => {
     const existing = requestedId ? getDraft(requestedId) : null;
+    const listed = listDrafts();
     const last = getLastOpen();
-    const lastDraft = last ? getDraft(last) : null;
-    const initial = existing ?? (wantSample ? sampleProposal() : lastDraft ?? sampleProposal());
-    const persisted = saveDraft(initial);
+    const lastDraft = (last ? getDraft(last) : null) ?? listed[0] ?? null;
+    let initial = existing ?? lastDraft;
+    if (!initial && canCreateDraft()) {
+      initial = sampleProposal();
+    } else if (!existing && wantSample && canCreateDraft()) {
+      initial = sampleProposal();
+    }
+    if (!initial) {
+      refreshDrafts();
+      return;
+    }
+    const persisted = saveDraft(initial) ?? initial;
     skipSave.current = true;
     setProposal(persisted);
     setSavedAt(persisted.updatedAt);
+    setLastOpen(persisted.id);
     refreshDrafts();
     if (requestedId !== persisted.id || wantSample) {
       router.replace(`/studio?id=${persisted.id}`);
@@ -57,7 +78,7 @@ export function StudioApp() {
     }
     const timer = window.setTimeout(() => {
       const saved = saveDraft(proposal);
-      setSavedAt(saved.updatedAt);
+      if (saved) setSavedAt(saved.updatedAt);
       refreshDrafts();
     }, 280);
     return () => window.clearTimeout(timer);
@@ -86,7 +107,16 @@ export function StudioApp() {
   );
 
   const createNew = useCallback(() => {
+    if (!canCreateDraft()) {
+      setLimitHit(true);
+      return;
+    }
     const next = saveDraft(createProposal({ title: "Новое предложение" }));
+    if (!next) {
+      setLimitHit(true);
+      return;
+    }
+    setLimitHit(false);
     router.replace(`/studio?id=${next.id}`);
     setShowDrafts(false);
   }, [router]);
@@ -134,6 +164,12 @@ export function StudioApp() {
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
+            <span className="hidden text-[11px] uppercase tracking-[0.14em] text-pine-300 sm:inline">
+              Free {Math.min(drafts.length, FREE_DRAFT_LIMIT)}/{FREE_DRAFT_LIMIT}
+            </span>
+            <Link href="/pro" className="btn-ghost">
+              Pro
+            </Link>
             <button type="button" className="btn-ghost" onClick={() => setShowDrafts((v) => !v)}>
               Черновики
             </button>
@@ -150,10 +186,21 @@ export function StudioApp() {
         </div>
       </header>
 
+      {limitHit ? (
+        <div className="no-print border-b border-lime/30 bg-pine-850 px-4 py-3 text-sm sm:px-6">
+          На free-тарифе доступны только {FREE_DRAFT_LIMIT} черновика.{" "}
+          <Link href="/pro" className="text-lime underline-offset-2 hover:underline">
+            Снять лимит в Pro
+          </Link>
+        </div>
+      ) : null}
+
       {showDrafts ? (
         <div className="no-print border-b border-pine-800 bg-pine-850 px-4 py-4 sm:px-6">
           <div className="mb-3 flex items-center justify-between">
-            <p className="font-display text-sm font-semibold">Черновики в этом браузере</p>
+            <p className="font-display text-sm font-semibold">
+              Черновики · {drafts.length}/{FREE_DRAFT_LIMIT} free
+            </p>
             <button type="button" className="text-sm text-pine-300 hover:text-lime" onClick={() => setShowDrafts(false)}>
               Закрыть
             </button>

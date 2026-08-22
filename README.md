@@ -7,9 +7,10 @@
 ## Что внутри
 
 - `/` — лендинг бренда Outframe
-- `/studio` — редактор (scope, цена, срок, terms) и live preview
+- `/studio` — редактор (scope, цена, срок, terms) и live preview; на free — до 2 черновиков
 - `/p/[id]` — превью черновика
-- Print / PDF — через диалог печати браузера («Сохранить как PDF»)
+- Print / PDF — через диалог печати; на free лист с водяным знаком
+- `/pro` — 990 ₽/мес и mailto waitlist
 
 ## Запуск
 

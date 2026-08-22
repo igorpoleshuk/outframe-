@@ -1,0 +1,22 @@
+---
+description: Outframe visual and product voice
+alwaysApply: true
+---
+
+# Outframe brand
+
+- Stack: Next.js App Router, TypeScript, Tailwind.
+- UI: dark pine/teal (`pine-*`), lime accent (`#c8f542`). Fonts: Syne + Outfit, Manrope for Cyrillic.
+- Do not use purple, cream, beige, or generic AI-landing palettes.
+- App chrome stays dark. The proposal sheet is cool paper (`#f3f6f3`) so Print/PDF stays readable.
+- Copy is Russian, short, and concrete. No “AI magic” filler.
+
+```tsx
+// ❌ BAD
+<div className="bg-purple-950 text-amber-50">Generate with AI</div>
+
+// ✅ GOOD
+<div className="bg-pine-900 text-paper">
+  <span className="text-lime">Собрать КП</span>
+</div>
+```

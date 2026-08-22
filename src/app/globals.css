@@ -73,4 +73,9 @@ body {
     max-width: none !important;
     padding: 0 !important;
   }
+
+  .proposal-watermark {
+    display: block !important;
+    color: #4d8a7c !important;
+  }
 }

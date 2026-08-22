@@ -1,3 +1,4 @@
+import { FREE_DRAFT_LIMIT } from "./plan";
 import { type Proposal } from "./proposal";
 
 export const STORAGE_KEY = "outframe.drafts.v1";
@@ -32,14 +33,20 @@ export function getDraft(id: string): Proposal | null {
   return readAll().find((item) => item.id === id) ?? null;
 }
 
-export function saveDraft(proposal: Proposal): Proposal {
+export function canCreateDraft(): boolean {
+  return readAll().length < FREE_DRAFT_LIMIT;
+}
+
+export function saveDraft(proposal: Proposal): Proposal | null {
   const next = { ...proposal, updatedAt: Date.now() };
   const drafts = readAll();
   const index = drafts.findIndex((item) => item.id === next.id);
   if (index >= 0) {
     drafts[index] = next;
-  } else {
+  } else if (drafts.length < FREE_DRAFT_LIMIT) {
     drafts.unshift(next);
+  } else {
+    return null;
   }
   writeAll(drafts);
   setLastOpen(next.id);

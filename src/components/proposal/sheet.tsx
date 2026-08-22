@@ -1,3 +1,4 @@
+import { FREE_WATERMARK } from "@/lib/plan";
 import { formatPrice, type Proposal } from "@/lib/proposal";
 
 type ProposalSheetProps = {
@@ -137,6 +138,9 @@ export function ProposalSheet({ proposal, compact = false }: ProposalSheetProps)
           Действует {display(proposal.validUntil, "2 недели")}
         </p>
       </footer>
+      <p className="proposal-watermark mt-8 text-center text-[11px] font-medium uppercase tracking-[0.18em] text-pine-400">
+        {FREE_WATERMARK}
+      </p>
     </article>
   );
 }

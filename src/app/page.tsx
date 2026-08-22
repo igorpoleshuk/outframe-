@@ -42,6 +42,9 @@ export default function HomePage() {
       <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
         <Logo />
         <nav className="flex items-center gap-3">
+          <Link href="/pro" className="btn-ghost">
+            Pro
+          </Link>
           <Link href="/studio" className="btn-ghost hidden sm:inline-flex">
             Студия
           </Link>

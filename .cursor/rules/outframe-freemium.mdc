@@ -1,0 +1,22 @@
+---
+description: Free-plan limits for studio drafts and PDF
+globs: src/lib/**/*.ts,src/components/studio/**/*.tsx,src/components/proposal/**/*.tsx,src/app/pro/**/*.tsx
+alwaysApply: false
+---
+
+# Freemium
+
+- Free plan: **2 drafts** max. Enforce in `saveDraft` and the studio “Новый” action.
+- New drafts above the limit must not be written to `localStorage`. Show a Pro CTA instead.
+- Every proposal sheet/PDF shows watermark `Собрано в Outframe · free` from `FREE_WATERMARK`.
+- `/pro` price is **990 ₽/мес**. Waitlist is `mailto` via `WAITLIST_MAILTO` in `src/lib/plan.ts`.
+- Keep plan numbers in `src/lib/plan.ts`. Do not hardcode a different limit or price.
+
+```ts
+// ❌ BAD
+saveDraft(createProposal()); // even when 2 drafts already exist
+
+// ✅ GOOD
+if (!canCreateDraft()) return;
+const next = saveDraft(createProposal());
+```
