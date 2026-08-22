@@ -51,9 +51,9 @@ export default function ProPage() {
           Free — это продукт. Донат — если рамка сэкономила время.
         </h1>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-pine-200">
-          Два черновика, ссылка клиенту и печать уже работают без аккаунта. Скиньте столько, сколько
-          инструмент сэкономил. Pro за {PRO_SUPPORT_PRICE_FULL} — необязательная поддержка, не
-          подписка SaaS.
+          {FREE_DRAFT_LIMIT} черновика, ссылка клиенту и печать уже работают без аккаунта. Скиньте
+          столько, сколько инструмент сэкономил. Pro за {PRO_SUPPORT_PRICE_FULL} — необязательная
+          поддержка, не подписка SaaS.
         </p>
 
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
