@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import { Manrope, Outfit, Syne } from "next/font/google";
+import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { CartProvider } from "@/components/cart-provider";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { STORE } from "@/lib/products";
 import "./globals.css";
 
-const syne = Syne({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-syne",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-outfit",
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -23,17 +22,25 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://outframe-phi.vercel.app"),
   title: {
-    default: "Outframe — коммерческие предложения для фрилансеров",
-    template: "%s · Outframe",
+    default: `${STORE.brand} — модная одежда в Бресте`,
+    template: `%s · ${STORE.brand}`,
   },
   description:
-    "Собери КП в живом превью: scope, цена, срок и условия. Черновики в браузере, ссылка на превью, печать и PDF.",
+    "Унисекс-одежда в Бресте. Каталог, корзина и заявка на заказ. Доставка Европочтой или самовывоз.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${syne.variable} ${outfit.variable} ${manrope.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="ru" className={`${cormorant.variable} ${manrope.variable}`}>
+      <body className="font-sans antialiased">
+        <CartProvider>
+          <div className="flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </CartProvider>
+      </body>
     </html>
   );
 }
