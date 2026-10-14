@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/components/cart-provider";
 import type { Product } from "@/lib/products";
 
 export function AddToCart({ product }: { product: Product }) {
-  const { addItem } = useCart();
+  const { addItem, count } = useCart();
   const [color, setColor] = useState(product.colors[0] ?? "");
   const [size, setSize] = useState(product.sizes[0] ?? "");
   const [added, setAdded] = useState(false);
@@ -34,7 +35,7 @@ export function AddToCart({ product }: { product: Product }) {
               key={value}
               type="button"
               onClick={() => setColor(value)}
-              className={`border px-3 py-2 text-sm transition ${
+              className={`touch-chip ${
                 color === value
                   ? "border-petal bg-petal-mist text-ink"
                   : "border-mist-soft text-mist hover:border-ink/40 hover:text-ink"
@@ -54,7 +55,7 @@ export function AddToCart({ product }: { product: Product }) {
               key={value}
               type="button"
               onClick={() => setSize(value)}
-              className={`min-w-12 border px-3 py-2 text-sm uppercase tracking-wide transition ${
+              className={`touch-chip min-w-12 uppercase tracking-wide ${
                 size === value
                   ? "border-ink bg-ink text-paper"
                   : "border-mist-soft text-mist hover:border-ink/40 hover:text-ink"
@@ -66,9 +67,23 @@ export function AddToCart({ product }: { product: Product }) {
         </div>
       </div>
 
-      <button type="button" className="btn-petal w-full sm:w-auto" onClick={onAdd} disabled={disabled}>
-        {disabled ? "Нет в наличии" : added ? "Добавлено" : "В корзину"}
-      </button>
+      <div className="sticky-action">
+        <div className="flex gap-2 md:block">
+          <button
+            type="button"
+            className="btn-petal min-h-12 flex-1 md:w-auto"
+            onClick={onAdd}
+            disabled={disabled}
+          >
+            {disabled ? "Нет в наличии" : added ? "Добавлено" : "В корзину"}
+          </button>
+          {count > 0 ? (
+            <Link href="/cart" className="btn-ghost min-h-12 flex-1 md:mt-3 md:hidden">
+              Корзина · {count}
+            </Link>
+          ) : null}
+        </div>
+      </div>
     </div>
   );
 }

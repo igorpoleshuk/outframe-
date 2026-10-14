@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { CartProvider } from "@/components/cart-provider";
 import { SiteFooter } from "@/components/site-footer";
@@ -27,6 +27,21 @@ export const metadata: Metadata = {
   },
   description:
     "Унисекс-одежда в Бресте. Каталог, корзина и заявка на заказ. Доставка Европочтой или самовывоз.",
+  appleWebApp: {
+    capable: true,
+    title: STORE.brand,
+    statusBarStyle: "default",
+  },
+  formatDetection: {
+    telephone: true,
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#f4f5f7",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -34,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ru" className={`${cormorant.variable} ${manrope.variable}`}>
       <body className="font-sans antialiased">
         <CartProvider>
-          <div className="flex min-h-screen flex-col">
+          <div className="flex min-h-dvh flex-col">
             <SiteHeader />
             <main className="flex-1">{children}</main>
             <SiteFooter />

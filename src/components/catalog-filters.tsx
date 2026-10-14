@@ -9,7 +9,7 @@ export function CatalogFilters() {
   const current = (params.get("cat") as ProductCategory | "все" | null) ?? "все";
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="scroll-x -mx-4 px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 md:gap-2">
       {CATEGORIES.map((cat) => {
         const href = cat === "все" ? "/catalog" : `/catalog?cat=${encodeURIComponent(cat)}`;
         const active = current === cat;
@@ -17,7 +17,7 @@ export function CatalogFilters() {
           <Link
             key={cat}
             href={href}
-            className={`border px-3 py-2 text-sm capitalize transition ${
+            className={`touch-chip capitalize ${
               active
                 ? "border-ink bg-ink text-paper"
                 : "border-mist-soft text-mist hover:border-ink/40 hover:text-ink"
