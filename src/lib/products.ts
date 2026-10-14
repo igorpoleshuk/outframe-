@@ -16,7 +16,7 @@ export type Product = {
 };
 
 export const STORE = {
-  brand: "Лилия",
+  brand: "Ладушки-shop",
   city: "Брест",
   phone: "+375297234697",
   phoneHref: "tel:+375297234697",

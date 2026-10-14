@@ -17,7 +17,7 @@ export type OrderDraft = {
   comment: string;
 };
 
-const STORAGE_KEY = "liliya-cart-v1";
+const STORAGE_KEY = "ladushki-cart-v1";
 
 export function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
@@ -45,7 +45,7 @@ export function readCart(): CartItem[] {
 export function writeCart(items: CartItem[]): void {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  window.dispatchEvent(new Event("liliya-cart"));
+  window.dispatchEvent(new Event("ladushki-cart"));
 }
 
 export function cartKey(item: Pick<CartItem, "slug" | "color" | "size">): string {

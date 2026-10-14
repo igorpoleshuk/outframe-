@@ -42,13 +42,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
     sync();
     const onStorage = (event: StorageEvent) => {
-      if (event.key === "liliya-cart-v1") sync();
+      if (event.key === "ladushki-cart-v1") sync();
     };
     window.addEventListener("storage", onStorage);
-    window.addEventListener("liliya-cart", sync);
+    window.addEventListener("ladushki-cart", sync);
     return () => {
       window.removeEventListener("storage", onStorage);
-      window.removeEventListener("liliya-cart", sync);
+      window.removeEventListener("ladushki-cart", sync);
     };
   }, []);
 

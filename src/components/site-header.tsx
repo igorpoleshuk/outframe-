@@ -25,7 +25,7 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5 md:px-8">
         <Link
           href="/"
-          className={`font-display text-3xl tracking-tight transition md:text-4xl ${
+          className={`font-display text-2xl tracking-tight transition sm:text-3xl md:text-[2rem] ${
             isHome ? "hover:text-petal-soft" : "hover:text-petal"
           }`}
         >

@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="border-t border-ink/10 bg-ink text-paper">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.2fr_1fr_1fr] md:px-8">
         <div>
-          <p className="font-display text-4xl tracking-tight">{STORE.brand}</p>
+          <p className="font-display text-3xl tracking-tight md:text-4xl">{STORE.brand}</p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-mist-soft">
             Магазин модной унисекс-одежды в Бресте. Базовый гардероб без лишнего шума.
           </p>

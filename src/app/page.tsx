@@ -14,7 +14,7 @@ export default function HomePage() {
         <div className="absolute bottom-10 left-[-4rem] h-80 w-80 rounded-full bg-white/5 blur-3xl" />
 
         <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-16 pt-36 md:justify-center md:px-8 md:pb-24 md:pt-28">
-          <p className="animate-fade font-display text-6xl leading-none tracking-tight md:text-8xl lg:text-9xl">
+          <p className="animate-fade max-w-[14ch] font-display text-5xl leading-[0.95] tracking-tight sm:text-6xl md:max-w-none md:text-7xl lg:text-8xl">
             {STORE.brand}
           </p>
           <h1 className="mt-6 max-w-xl animate-rise font-display text-3xl leading-tight text-paper/95 md:text-4xl">
