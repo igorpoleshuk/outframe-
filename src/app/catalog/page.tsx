@@ -15,21 +15,21 @@ export default async function CatalogPage({ searchParams }: { searchParams: Sear
   const list = selected ? products.filter((p) => p.category === selected) : products;
 
   return (
-    <div className="bg-paper pt-28 md:pt-32">
-      <div className="mx-auto max-w-6xl px-5 pb-20 md:px-8 md:pb-28">
-        <h1 className="font-display text-5xl text-ink md:text-6xl">Каталог</h1>
+    <div className="page-shell bg-paper">
+      <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-5 md:px-8 md:pb-28">
+        <h1 className="font-display text-4xl text-ink sm:text-5xl md:text-6xl">Каталог</h1>
         <p className="mt-3 max-w-lg text-sm text-mist">
           Унисекс. Выберите категорию, откройте карточку и добавьте размер с цветом в корзину.
         </p>
 
-        <div className="mt-8">
-          <Suspense fallback={<div className="h-10" />}>
+        <div className="mt-6 sm:mt-8">
+          <Suspense fallback={<div className="h-11" />}>
             <CatalogFilters />
           </Suspense>
         </div>
 
         {list.length ? (
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-7 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
             {list.map((product) => (
               <ProductCard key={product.slug} product={product} />
             ))}

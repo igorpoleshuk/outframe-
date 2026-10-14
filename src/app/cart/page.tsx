@@ -6,9 +6,11 @@ export const metadata = {
 
 export default function CartRoute() {
   return (
-    <div className="bg-paper pt-28 md:pt-32">
-      <div className="mx-auto max-w-6xl px-5 pb-20 md:px-8 md:pb-28">
-        <h1 className="mb-10 font-display text-5xl text-ink md:text-6xl">Корзина</h1>
+    <div className="page-shell bg-paper">
+      <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-5 md:px-8 md:pb-28">
+        <h1 className="mb-8 font-display text-4xl text-ink sm:mb-10 sm:text-5xl md:text-6xl">
+          Корзина
+        </h1>
         <CartPage />
       </div>
     </div>

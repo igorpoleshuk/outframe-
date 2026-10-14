@@ -18,14 +18,16 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`absolute inset-x-0 top-0 z-40 ${
-        isHome ? "text-paper" : "text-ink"
+      className={`fixed inset-x-0 top-0 z-40 pt-[env(safe-area-inset-top,0px)] ${
+        isHome
+          ? "bg-gradient-to-b from-ink/55 to-transparent text-paper"
+          : "border-b border-ink/8 bg-paper/95 text-ink shadow-[0_1px_0_rgba(18,18,20,0.04)] backdrop-blur-md"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-5 md:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-5 md:px-8 md:py-4">
         <Link
           href="/"
-          className={`font-display text-2xl tracking-tight transition sm:text-3xl md:text-[2rem] ${
+          className={`min-w-0 truncate font-display text-[1.35rem] leading-none tracking-tight transition sm:text-2xl md:text-[2rem] ${
             isHome ? "hover:text-petal-soft" : "hover:text-petal"
           }`}
         >
@@ -55,27 +57,19 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-3 text-sm">
-          <a
-            href={STORE.phoneHref}
-            className={`hidden sm:inline ${
-              isHome ? "text-paper/75 hover:text-paper" : "text-mist hover:text-ink"
-            }`}
-          >
-            {STORE.phone}
-          </a>
+        <div className="flex shrink-0 items-center gap-2 text-sm">
           <Link
             href="/cart"
-            className={`relative border px-3 py-2 transition ${
+            className={`relative inline-flex h-11 items-center border px-3 transition md:h-auto md:py-2 ${
               isHome
                 ? "border-paper/35 hover:border-paper"
-                : "border-ink/20 hover:border-petal hover:text-petal"
+                : "border-ink/15 hover:border-petal hover:text-petal"
             }`}
           >
             Корзина
             {ready && count > 0 ? (
               <span
-                className={`ml-2 inline-flex min-w-5 justify-center text-xs ${
+                className={`ml-2 inline-flex min-w-5 justify-center text-xs font-medium ${
                   isHome ? "text-petal-soft" : "text-petal"
                 }`}
               >
@@ -87,15 +81,31 @@ export function SiteHeader() {
       </div>
 
       <nav
-        className={`flex gap-5 overflow-x-auto px-5 pb-3 text-xs tracking-wide md:hidden ${
-          isHome ? "text-paper/80" : "text-mist"
+        className={`scroll-x px-4 pb-3 text-sm tracking-wide md:hidden ${
+          isHome ? "text-paper/85" : "text-mist"
         }`}
+        aria-label="Разделы"
       >
-        {links.map((link) => (
-          <Link key={link.href} href={link.href} className="whitespace-nowrap hover:text-inherit">
-            {link.label}
-          </Link>
-        ))}
+        {links.map((link) => {
+          const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`inline-flex h-10 items-center whitespace-nowrap border px-3 transition ${
+                isHome
+                  ? active
+                    ? "border-paper/50 bg-white/10 text-paper"
+                    : "border-paper/20"
+                  : active
+                    ? "border-ink/30 bg-white text-ink"
+                    : "border-ink/10"
+              }`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </nav>
     </header>
   );

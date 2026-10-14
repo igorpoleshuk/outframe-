@@ -6,9 +6,9 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-paper pt-28 md:pt-32">
-      <div className="mx-auto max-w-3xl px-5 pb-20 md:px-8 md:pb-28">
-        <h1 className="font-display text-5xl text-ink md:text-6xl">О магазине</h1>
+    <div className="page-shell bg-paper">
+      <div className="mx-auto max-w-3xl px-4 pb-20 sm:px-5 md:px-8 md:pb-28">
+        <h1 className="font-display text-4xl text-ink sm:text-5xl md:text-6xl">О магазине</h1>
         <div className="mt-8 space-y-5 text-base leading-relaxed text-ink/80">
           <p>
             <span className="font-display text-2xl text-ink">{STORE.brand}</span> — магазин модной
@@ -23,12 +23,7 @@ export default function AboutPage() {
             Заказ оформляется заявкой на сайте. Мы перезваниваем, подтверждаем размер и наличие,
             затем отправляем Европочтой или отдаём самовывозом в Бресте.
           </p>
-          <p>
-            Связь:{" "}
-            <a href={STORE.phoneHref} className="text-petal hover:underline">
-              {STORE.phone}
-            </a>
-          </p>
+          <p>Связь — после заявки на сайте: мы перезвоним на номер, который вы укажете.</p>
         </div>
       </div>
     </div>

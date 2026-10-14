@@ -28,19 +28,13 @@ export function CartPage() {
 
   if (submitted) {
     return (
-      <div className="mx-auto max-w-xl animate-rise border border-mist-faint bg-white px-6 py-10 text-center md:px-10">
-        <p className="font-display text-4xl text-ink">Заявка принята</p>
+      <div className="mx-auto max-w-xl animate-rise border border-mist-faint bg-white px-5 py-9 text-center sm:px-6 sm:py-10 md:px-10">
+        <p className="font-display text-3xl text-ink sm:text-4xl">Заявка принята</p>
         <p className="mt-4 text-sm leading-relaxed text-mist">
-          Мы свяжемся с вами по телефону, подтвердим наличие и способ получения:
+          Мы свяжемся с вами по указанному телефону, подтвердим наличие и способ получения:
           Европочта или самовывоз в Бресте.
         </p>
-        <p className="mt-6 text-sm text-ink">
-          Вопросы:{" "}
-          <a href={STORE.phoneHref} className="text-petal hover:underline">
-            {STORE.phone}
-          </a>
-        </p>
-        <Link href="/catalog" className="btn-ghost mt-8 inline-flex">
+        <Link href="/catalog" className="btn-ghost mt-8 inline-flex w-full sm:w-auto">
           Вернуться в каталог
         </Link>
       </div>
@@ -49,10 +43,10 @@ export function CartPage() {
 
   if (!items.length) {
     return (
-      <div className="mx-auto max-w-xl border border-mist-faint bg-white px-6 py-10 text-center md:px-10">
-        <p className="font-display text-4xl text-ink">Корзина пуста</p>
+      <div className="mx-auto max-w-xl border border-mist-faint bg-white px-5 py-9 text-center sm:px-6 sm:py-10 md:px-10">
+        <p className="font-display text-3xl text-ink sm:text-4xl">Корзина пуста</p>
         <p className="mt-3 text-sm text-mist">Выберите вещи в каталоге и добавьте размер с цветом.</p>
-        <Link href="/catalog" className="btn-petal mt-8 inline-flex">
+        <Link href="/catalog" className="btn-petal mt-8 inline-flex w-full sm:w-auto">
           Открыть каталог
         </Link>
       </div>
@@ -60,8 +54,8 @@ export function CartPage() {
   }
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-      <section className="space-y-4">
+    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+      <section className="space-y-3 sm:space-y-4">
         {items.map((item) => {
           const key = cartKey(item);
           return (
@@ -69,8 +63,11 @@ export function CartPage() {
               key={key}
               className="flex flex-col gap-4 border border-mist-faint bg-white p-4 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div>
-                <Link href={`/product/${item.slug}`} className="font-display text-2xl text-ink hover:text-petal">
+              <div className="min-w-0">
+                <Link
+                  href={`/product/${item.slug}`}
+                  className="font-display text-xl text-ink hover:text-petal sm:text-2xl"
+                >
                   {item.name}
                 </Link>
                 <p className="mt-1 text-sm text-mist">
@@ -78,11 +75,11 @@ export function CartPage() {
                 </p>
                 <p className="mt-2 text-sm font-medium">{formatPrice(item.price)}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between gap-3 sm:justify-end">
                 <div className="flex items-center border border-mist-soft">
                   <button
                     type="button"
-                    className="px-3 py-2 text-sm hover:bg-paper"
+                    className="inline-flex h-11 w-11 items-center justify-center text-lg hover:bg-paper active:bg-paper"
                     onClick={() => updateQty(key, item.qty - 1)}
                     aria-label="Уменьшить"
                   >
@@ -91,7 +88,7 @@ export function CartPage() {
                   <span className="min-w-8 text-center text-sm">{item.qty}</span>
                   <button
                     type="button"
-                    className="px-3 py-2 text-sm hover:bg-paper"
+                    className="inline-flex h-11 w-11 items-center justify-center text-lg hover:bg-paper active:bg-paper"
                     onClick={() => updateQty(key, item.qty + 1)}
                     aria-label="Увеличить"
                   >
@@ -100,7 +97,7 @@ export function CartPage() {
                 </div>
                 <button
                   type="button"
-                  className="text-sm text-mist transition hover:text-petal"
+                  className="inline-flex h-11 items-center px-2 text-sm text-mist transition hover:text-petal"
                   onClick={() => removeItem(key)}
                 >
                   Убрать
@@ -112,8 +109,8 @@ export function CartPage() {
         <p className="text-right text-lg font-medium text-ink">Итого: {formatPrice(total)}</p>
       </section>
 
-      <section className="border border-mist-faint bg-white p-5 md:p-7">
-        <h2 className="font-display text-3xl text-ink">Оформление заявки</h2>
+      <section className="border border-mist-faint bg-white p-4 sm:p-5 md:p-7">
+        <h2 className="font-display text-2xl text-ink sm:text-3xl">Оформление заявки</h2>
         <p className="mt-2 text-sm text-mist">
           Без онлайн-оплаты. Мы перезвоним, подтвердим заказ и способ получения.
         </p>
@@ -130,6 +127,7 @@ export function CartPage() {
               onChange={(e) => setName(e.target.value)}
               required
               autoComplete="name"
+              enterKeyHint="next"
             />
           </div>
           <div>
@@ -142,9 +140,11 @@ export function CartPage() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
+              type="tel"
               inputMode="tel"
               placeholder="+375…"
               autoComplete="tel"
+              enterKeyHint="next"
             />
           </div>
           <div>
@@ -157,6 +157,8 @@ export function CartPage() {
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
+              autoComplete="address-level2"
+              enterKeyHint="next"
             />
           </div>
           <fieldset>
@@ -170,7 +172,7 @@ export function CartPage() {
               ).map(([value, label]) => (
                 <label
                   key={value}
-                  className={`flex cursor-pointer items-center gap-3 border px-3 py-3 text-sm transition ${
+                  className={`flex min-h-12 cursor-pointer items-center gap-3 border px-3 py-3 text-sm transition ${
                     delivery === value
                       ? "border-petal bg-petal-mist"
                       : "border-mist-soft hover:border-ink/30"
@@ -182,7 +184,7 @@ export function CartPage() {
                     value={value}
                     checked={delivery === value}
                     onChange={() => setDelivery(value)}
-                    className="accent-petal"
+                    className="h-4 w-4 accent-petal"
                   />
                   {label}
                 </label>
@@ -206,9 +208,11 @@ export function CartPage() {
             Способ: {deliveryLabel(delivery)}. Оплата после подтверждения заявки.
           </p>
 
-          <button type="submit" className="btn-petal w-full">
-            Отправить заявку
-          </button>
+          <div className="sticky-action !mx-[-1rem] sm:!mx-[-1.25rem] md:!mx-0">
+            <button type="submit" className="btn-petal w-full">
+              Отправить заявку
+            </button>
+          </div>
         </form>
       </section>
     </div>
