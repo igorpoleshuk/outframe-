@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  --ink: #121214;
+  --paper: #f4f5f7;
+  --petal: #a85466;
+  --mist: #9aa1ad;
 }
 
 html,
@@ -12,70 +16,66 @@ body {
 }
 
 body {
-  background: #0a1a16;
-  color: #e8f0ea;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 ::selection {
-  background: #c8f542;
-  color: #1a2a05;
+  background: #a85466;
+  color: #f4f5f7;
 }
 
 .field-label {
-  @apply mb-1.5 block text-[11px] font-medium uppercase tracking-[0.16em] text-pine-300;
+  @apply mb-1.5 block text-[11px] font-medium uppercase tracking-[0.18em] text-mist;
 }
 
 .field-input,
-.field-textarea {
-  @apply w-full rounded-sm border border-pine-600/70 bg-pine-900 px-3 py-2.5 text-sm text-paper outline-none transition placeholder:text-pine-400 focus:border-lime/70 focus:ring-1 focus:ring-lime/40;
+.field-textarea,
+.field-select {
+  @apply w-full border border-mist-soft/80 bg-white px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-mist focus:border-petal focus:ring-1 focus:ring-petal/30;
 }
 
 .field-textarea {
-  @apply min-h-[92px] resize-y leading-relaxed;
+  @apply min-h-[96px] resize-y leading-relaxed;
 }
 
-.btn-lime {
-  @apply inline-flex items-center justify-center gap-2 rounded-sm bg-lime px-4 py-2.5 font-display text-sm font-semibold text-lime-ink transition hover:bg-[#d6ff5c];
+.btn-petal {
+  @apply inline-flex items-center justify-center gap-2 bg-petal px-5 py-3 font-sans text-sm font-medium tracking-wide text-paper transition hover:bg-petal-deep disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-sm border border-pine-500/70 px-4 py-2.5 text-sm text-paper transition hover:border-lime/60 hover:text-lime;
+  @apply inline-flex items-center justify-center gap-2 border border-ink/20 bg-transparent px-5 py-3 text-sm text-ink transition hover:border-petal hover:text-petal;
 }
 
-.proposal-sheet {
-  width: 100%;
+.btn-ink {
+  @apply inline-flex items-center justify-center gap-2 bg-ink px-5 py-3 text-sm font-medium text-paper transition hover:bg-ink-soft;
 }
 
-@media print {
-  @page {
-    size: A4;
-    margin: 12mm;
-  }
+.hero-veil {
+  background:
+    linear-gradient(120deg, rgba(18, 18, 20, 0.72) 0%, rgba(18, 18, 20, 0.35) 48%, rgba(18, 18, 20, 0.55) 100%),
+    radial-gradient(ellipse at 70% 20%, rgba(168, 84, 102, 0.35), transparent 55%),
+    linear-gradient(160deg, #1a181c 0%, #2c2428 40%, #3a2a30 70%, #1e1c20 100%);
+}
 
-  html,
-  body {
-    background: white !important;
-    color: #0c1916 !important;
-  }
+.fabric-grain {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px);
+  background-size: 18px 18px, 28px 28px;
+}
 
-  .no-print {
-    display: none !important;
-  }
+.product-swatch {
+  background:
+    linear-gradient(145deg, var(--swatch-a), var(--swatch-b) 55%, var(--swatch-c));
+}
 
-  .print-root {
-    background: white !important;
-    padding: 0 !important;
-    min-height: auto !important;
-  }
-
-  .proposal-sheet {
-    box-shadow: none !important;
-    max-width: none !important;
-    padding: 0 !important;
-  }
-
-  .proposal-watermark {
-    display: block !important;
-    color: #4d8a7c !important;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
