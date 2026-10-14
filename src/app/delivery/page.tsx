@@ -32,12 +32,8 @@ export default function DeliveryPage() {
           <section>
             <h2 className="font-display text-2xl text-ink sm:text-3xl">Оплата</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink/80">
-              Оплата после подтверждения заявки — способ обсуждаем при звонке. Если остались
-              вопросы:{" "}
-              <a href={STORE.phoneHref} className="text-petal hover:underline">
-                {STORE.phone}
-              </a>
-              .
+              Оплата после подтверждения заявки — способ обсуждаем при звонке. Вопросы можно
+              написать в комментарии к заявке.
             </p>
           </section>
 

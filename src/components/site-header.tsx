@@ -58,14 +58,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 text-sm">
-          <a
-            href={STORE.phoneHref}
-            className={`whitespace-nowrap text-[11px] tracking-wide transition sm:text-sm ${
-              isHome ? "text-paper/75 hover:text-paper" : "text-mist hover:text-ink"
-            }`}
-          >
-            {STORE.phone}
-          </a>
           <Link
             href="/cart"
             className={`relative inline-flex h-11 items-center border px-3 transition md:h-auto md:py-2 ${
@@ -74,8 +66,7 @@ export function SiteHeader() {
                 : "border-ink/15 hover:border-petal hover:text-petal"
             }`}
           >
-            <span className="sm:hidden">Корзина</span>
-            <span className="hidden sm:inline">Корзина</span>
+            Корзина
             {ready && count > 0 ? (
               <span
                 className={`ml-2 inline-flex min-w-5 justify-center text-xs font-medium ${

@@ -31,14 +31,8 @@ export function CartPage() {
       <div className="mx-auto max-w-xl animate-rise border border-mist-faint bg-white px-5 py-9 text-center sm:px-6 sm:py-10 md:px-10">
         <p className="font-display text-3xl text-ink sm:text-4xl">Заявка принята</p>
         <p className="mt-4 text-sm leading-relaxed text-mist">
-          Мы свяжемся с вами по телефону, подтвердим наличие и способ получения:
+          Мы свяжемся с вами по указанному телефону, подтвердим наличие и способ получения:
           Европочта или самовывоз в Бресте.
-        </p>
-        <p className="mt-6 text-sm text-ink">
-          Вопросы:{" "}
-          <a href={STORE.phoneHref} className="text-petal hover:underline">
-            {STORE.phone}
-          </a>
         </p>
         <Link href="/catalog" className="btn-ghost mt-8 inline-flex w-full sm:w-auto">
           Вернуться в каталог

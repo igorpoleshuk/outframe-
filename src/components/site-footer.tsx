@@ -31,12 +31,7 @@ export function SiteFooter() {
         <div className="space-y-3 text-sm">
           <p className="text-[11px] uppercase tracking-[0.18em] text-mist">Контакты</p>
           <p className="text-mist-soft">{STORE.city}</p>
-          <a
-            href={STORE.phoneHref}
-            className="flex min-h-11 items-center text-base text-paper transition hover:text-petal-soft"
-          >
-            {STORE.phone}
-          </a>
+          <p className="text-mist-soft">Связь после заявки на сайте</p>
           <p className="text-mist-soft">Европочта или самовывоз</p>
         </div>
       </div>
