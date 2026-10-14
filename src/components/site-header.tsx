@@ -60,28 +60,11 @@ export function SiteHeader() {
         <div className="flex shrink-0 items-center gap-2 text-sm">
           <a
             href={STORE.phoneHref}
-            aria-label={`Позвонить ${STORE.phone}`}
-            className={`inline-flex h-11 min-w-11 items-center justify-center border px-3 transition md:h-auto md:min-w-0 md:border-0 md:px-0 ${
-              isHome
-                ? "border-paper/35 text-paper hover:border-paper"
-                : "border-ink/15 text-ink hover:border-petal hover:text-petal"
+            className={`whitespace-nowrap text-[11px] tracking-wide transition sm:text-sm ${
+              isHome ? "text-paper/75 hover:text-paper" : "text-mist hover:text-ink"
             }`}
           >
-            <svg
-              className="h-5 w-5 md:hidden"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              aria-hidden
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.6 10.8c1.4 2.7 3.9 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C11.4 21 3 12.6 3 2.7c0-.5.4-1 1-1H7c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.7 2.2Z"
-              />
-            </svg>
-            <span className="hidden md:inline">{STORE.phone}</span>
+            {STORE.phone}
           </a>
           <Link
             href="/cart"

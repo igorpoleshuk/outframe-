@@ -49,9 +49,6 @@ export default function DeliveryPage() {
             </p>
           </section>
 
-          <a href={STORE.phoneHref} className="btn-petal inline-flex w-full sm:w-auto">
-            Позвонить: {STORE.phone}
-          </a>
         </div>
       </div>
     </div>

@@ -40,14 +40,9 @@ export function CartPage() {
             {STORE.phone}
           </a>
         </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <a href={STORE.phoneHref} className="btn-petal w-full sm:w-auto">
-            Позвонить
-          </a>
-          <Link href="/catalog" className="btn-ghost w-full sm:w-auto">
-            Вернуться в каталог
-          </Link>
-        </div>
+        <Link href="/catalog" className="btn-ghost mt-8 inline-flex w-full sm:w-auto">
+          Вернуться в каталог
+        </Link>
       </div>
     );
   }

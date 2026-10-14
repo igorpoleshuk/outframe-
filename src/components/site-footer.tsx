@@ -10,9 +10,6 @@ export function SiteFooter() {
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-mist-soft">
             Магазин модной унисекс-одежды в Бресте. Базовый гардероб без лишнего шума.
           </p>
-          <a href={STORE.phoneHref} className="btn-petal mt-5 inline-flex w-full sm:w-auto">
-            Позвонить
-          </a>
         </div>
 
         <div className="space-y-1 text-sm">

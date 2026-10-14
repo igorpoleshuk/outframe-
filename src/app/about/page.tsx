@@ -29,9 +29,6 @@ export default function AboutPage() {
               {STORE.phone}
             </a>
           </p>
-          <a href={STORE.phoneHref} className="btn-petal mt-2 inline-flex w-full sm:w-auto">
-            Позвонить
-          </a>
         </div>
       </div>
     </div>

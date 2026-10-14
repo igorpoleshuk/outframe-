@@ -18,7 +18,7 @@ export type Product = {
 export const STORE = {
   brand: "Ладушки-shop",
   city: "Брест",
-  phone: "+375297234697",
+  phone: "+37529-723-46-97",
   phoneHref: "tel:+375297234697",
   pickupAddress: "г. Брест, ул. Советская (самовывоз по согласованию)",
   currency: "BYN",
